@@ -80,12 +80,12 @@ def prepare(job):
     # Write the SLURM script
     jobfile.write("#!/bin/bash --login\n")
 
-    jobfile.write("#SBATCH -J " + job["jobname"] + "\n")
+    jobfile.write("#SBATCH --job-name " + job["jobname"] + "\n")
 
     # Queue to submit to (if supplied)
     if job["queue"] is not "":
 
-        jobfile.write("#SBATCH -p " + job["queue"] + "\n")
+        jobfile.write("#SBATCH --partition " + job["queue"] + "\n")
 
     # Account to charge (if supplied)
     if job["account"] is not "":
@@ -93,12 +93,16 @@ def prepare(job):
         # if no accountflag is provided use the default
         if job["accountflag"] is "":
 
-            jobfile.write("#SBATCH -A " + job["account"] + "\n")
+            jobfile.write("#SBATCH --account " + job["account"] + "\n")
 
         else:
 
             jobfile.write("#SBATCH " + job["accountflag"] + " " +
                           job["account"] + "\n")
+
+    if job["slurm-constraint"] is not "":
+
+        jobfile.write("#SBATCH --constaint=" + job["slurm-constraint"])
 
     if job["memory"] is not "":
 
@@ -122,7 +126,7 @@ def prepare(job):
     cpn = job["corespernode"]
 
     # Specify the total number of mpi tasks required
-    jobfile.write("#SBATCH -n " + cores + "\n")
+    jobfile.write("#SBATCH --ntasks " + cores + "\n")
 
     # If user has specified corespernode for under utilisation then
     # set the total nodes (-N) parameter.
@@ -135,17 +139,17 @@ def prepare(job):
         jobfile.write("#SBATCH -N " + nodes + "\n")
 
     # Walltime for job
-    jobfile.write("#SBATCH -t " + job["maxtime"] + ":00\n\n")
+    jobfile.write("#SBATCH --time " + job["maxtime"] + ":00\n\n")
 
     # Redirect stdout
     if job["stdout"] != "":
 
-        jobfile.write("#SBATCH -o " + job["stdout"] + "\n")
+        jobfile.write("#SBATCH --output " + job["stdout"] + "\n")
 
     # Redirect stderr
     if job["stderr"] != "":
 
-        jobfile.write("#SBATCH -e " + job["stderr"] + "\n\n")
+        jobfile.write("#SBATCH --error " + job["stderr"] + "\n\n")
 
     # Load any custom scripts.
     if job["scripts"] != "":

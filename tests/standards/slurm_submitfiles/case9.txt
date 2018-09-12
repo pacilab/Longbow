@@ -1,12 +1,12 @@
 #!/bin/bash --login
-#SBATCH -J testjob
-#SBATCH -p debug
-#SBATCH -n 24
+#SBATCH --job-name testjob
+#SBATCH --partition debug
+#SBATCH --ntasks 24
 #SBATCH -N 1
-#SBATCH -t 24:00:00
+#SBATCH --time 24:00:00
 
-#SBATCH -o test.log
-#SBATCH -e test.err
+#SBATCH --output test.log
+#SBATCH --error test.err
 
 module load amber
 

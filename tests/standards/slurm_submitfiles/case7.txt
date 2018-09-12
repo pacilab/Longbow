@@ -1,10 +1,10 @@
 #!/bin/bash --login
-#SBATCH -J testjob
-#SBATCH -p debug
+#SBATCH --job-name testjob
+#SBATCH --partition debug
 #SBATCH --gres=gpu:1
-#SBATCH -n 24
+#SBATCH --ntasks 24
 #SBATCH -N 1
-#SBATCH -t 24:00:00
+#SBATCH --time 24:00:00
 
 ls /dir
 cd /dir
