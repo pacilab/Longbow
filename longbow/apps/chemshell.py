@@ -37,12 +37,20 @@ simple as modifying the EXECDATA structure below. See the documentation at
 http://www.hecbiosim.ac.uk/longbow-devdocs for more information.
 """
 
+import logging
+import re
+import longbow.exceptions as exceptions
+import longbow.shellwrappers as shellwrappers
+
+
 EXECDATA = {
     "chemsh.x": {
         "subexecutables": [],
         "requiredfiles": ["<"],
     }
 }
+
+LOG = logging.getLogger("longbow.apps.chemshell")
 
 
 def rsyncuploadhook(jobs, job):
@@ -51,3 +59,45 @@ def rsyncuploadhook(jobs, job):
 
     jobs[job]["upload-include"] = ""
     jobs[job]["upload-exclude"] = "log, *.log"
+
+
+def submitscripthook(job):
+    '''
+    This hook will replace the generation of a submit script. Since Chemshell
+    calls the scheduler by itself, we will defer this functionality to
+    Chemshell itself.
+    '''
+
+    LOG.info("For job {0} - Chemshell is being used so skip creation of "
+             "submit file.".format(job["jobname"]))
+
+
+def submithook(job):
+    '''
+    This hook will SSH into the HPC machine, change into the job directory then
+    run Chemshell which in turn will submit a job. It will grab the jobid from
+    chemshell.
+    '''
+
+    LOG.info("Chemshell plugin overrides the native submit function.")
+
+    # Change into the working directory and submit the job.
+    cmd = ["cd " + job["destdir"] + "\n", "qsub " + job["subfile"]]
+
+    shellout = shellwrappers.sendtossh(job, cmd)
+
+    # Find job id.
+    try:
+
+        # Do the regex in Longbow rather than in the subprocess.
+        jobid = re.search(r'\d+', shellout[0]).group()
+
+    except AttributeError:
+
+        raise exceptions.JobsubmitError(
+            "Could not detect the job id during submission, this means that "
+            "either the submission failed in an unexpected way, or that "
+            "Longbow could not understand the returned information.")
+
+    # Put jobid into the job dictionary.
+    job["jobid"] = jobid

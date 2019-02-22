@@ -65,6 +65,7 @@ import logging
 import time
 import os
 
+import longbow.apps as apps
 import longbow.configuration as configuration
 import longbow.exceptions as exceptions
 import longbow.shellwrappers as shellwrappers
@@ -313,30 +314,43 @@ def prepare(jobs):
 
         job = jobs[item]
         scheduler = job["scheduler"]
+        appplugins = getattr(apps, "PLUGINEXECS")
+        app = appplugins[os.path.basename(job["executable"])]
 
+        # First try a call to the submitscripthook method.
         try:
 
-            if job["subfile"] == "":
+            getattr(apps, app.lower()).submitscripthook(job)
 
-                LOG.info("Creating submit file for job '%s'", item)
-
-                getattr(schedulers, scheduler.lower()).prepare(job)
-
-                LOG.info("Submit file created successfully")
-
-            else:
-
-                LOG.info("For job '%s' user has supplied their own job submit "
-                         "script - skipping creation.", item)
-
-                job["upload-include"] = (job["upload-include"] + ", " +
-                                         job["subfile"])
-
+        # If the hook isn't present, carry on as normal.
         except AttributeError:
 
-            raise exceptions.PluginattributeError(
-                "prepare method cannot be found in plugin '{0}'"
-                .format(scheduler))
+            try:
+
+                # Write out submit file
+                if job["subfile"] == "":
+
+                    LOG.info("Creating submit file for job '%s'", item)
+
+                    getattr(schedulers, scheduler.lower()).prepare(job)
+
+                    LOG.info("Submit file created successfully")
+
+                # User supplied own submit file, so skip making one, and add
+                # theirs to upload list.
+                else:
+
+                    LOG.info("For job '%s' user has supplied their own job "
+                             "submit script - skipping creation.", item)
+
+                    job["upload-include"] = (job["upload-include"] + ", " +
+                                             job["subfile"])
+
+            except AttributeError:
+
+                raise exceptions.PluginattributeError(
+                    "prepare method cannot be found in plugin '{0}'"
+                    .format(scheduler))
 
     LOG.info("Submit file/s created.")
 
@@ -373,21 +387,32 @@ def submit(jobs):
 
         job = jobs[item]
         scheduler = job["scheduler"]
+        appplugins = getattr(apps, "PLUGINEXECS")
+        app = appplugins[os.path.basename(job["executable"])]
 
         # Try and submit.
         try:
 
-            getattr(schedulers, scheduler.lower()).submit(job)
+            # Try to call the submithook from an app plugin
+            try:
 
-            LOG.info("Job '%s' submitted with id '%s'", item, job["jobid"])
+                getattr(apps, app.lower()).submithook(job)
 
-            job["laststatus"] = "Queued"
+            # If one isn't given then carry on as normal.
+            except AttributeError:
 
-            # Increment the queue counter by one (used to count the slots).
-            jobs["lbowconf"][job["resource"] + "-" + "queue-slots"] = str(int(
-                jobs["lbowconf"][job["resource"] + "-" + "queue-slots"]) + 1)
+                getattr(schedulers, scheduler.lower()).submit(job)
 
-            submitted += 1
+                LOG.info("Job '%s' submitted with id '%s'", item, job["jobid"])
+
+                job["laststatus"] = "Queued"
+
+                # Increment the queue counter by one (used to count the slots).
+                jobs["lbowconf"][job["resource"] + "-" + "queue-slots"] = \
+                    str(int(jobs["lbowconf"][job["resource"] +
+                            "-" + "queue-slots"]) + 1)
+
+                submitted += 1
 
         # Submit method can't be found.
         except AttributeError:
