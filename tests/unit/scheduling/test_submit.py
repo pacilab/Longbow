@@ -60,9 +60,10 @@ def test_submit_single(mock_isdir, mock_submit):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         }
     }
 
@@ -86,19 +87,22 @@ def test_submit_multiplesame(mock_isdir, mock_lsf):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test123"
+            "scheduler": "LSF"
         },
         "job-two": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         },
         "job-three": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test789"
+            "scheduler": "LSF"
         }
     }
 
@@ -123,16 +127,19 @@ def test_submit_multiplediff(mock_isdir, mock_lsf, mock_pbs, mock_slurm):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "executable": "pmemd.MPI",
             "resource": "lsf-machine",
             "scheduler": "LSF",
             "jobid": "test123"
         },
         "job-two": {
+            "executable": "pmemd.MPI",
             "resource": "pbs-machine",
             "scheduler": "pbs",
             "jobid": "test456"
         },
         "job-three": {
+            "executable": "pmemd.MPI",
             "resource": "slurm-machine",
             "scheduler": "Slurm",
             "jobid": "test789"
@@ -165,9 +172,10 @@ def test_submit_filewrite(mock_isdir, mock_submit, mock_savini):
             "recoveryfile": "recovery-YYMMDD-HHMMSS"
         },
         "job-one": {
-            "resource": "test-machine",
-            "scheduler": "LSF",
             "jobid": "test456",
+            "executable": "pmemd.MPI",
+            "resource": "test-machine",
+            "scheduler": "LSF"
         }
     }
 
@@ -193,9 +201,10 @@ def test_submit_fileuninit(mock_isdir, mock_submit, mock_savini):
             "recoveryfile": ""
         },
         "job-one": {
-            "resource": "test-machine",
-            "scheduler": "LSF",
             "jobid": "test456",
+            "executable": "pmemd.MPI",
+            "resource": "test-machine",
+            "scheduler": "LSF"
         }
     }
 
@@ -221,9 +230,10 @@ def test_submit_fileexcept1(mock_isdir, mock_submit, mock_savini):
             "recoveryfile": "recovery-YYMMDD-HHMMSS"
         },
         "job-one": {
-            "resource": "test-machine",
-            "scheduler": "LSF",
             "jobid": "test456",
+            "executable": "pmemd.MPI",
+            "resource": "test-machine",
+            "scheduler": "LSF"
         }
     }
 
@@ -248,9 +258,10 @@ def test_submit_fileexcept2(mock_isdir, mock_submit, mock_savini):
             "recoveryfile": "recovery-YYMMDD-HHMMSS"
         },
         "job-one": {
-            "resource": "test-machine",
-            "scheduler": "LSF",
             "jobid": "test456",
+            "executable": "pmemd.MPI",
+            "resource": "test-machine",
+            "scheduler": "LSF"
         }
     }
 
@@ -273,9 +284,10 @@ def test_submit_attrexcept(mock_isdir, mock_submit, mock_savini):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         }
     }
 
@@ -300,9 +312,10 @@ def test_submit_submitexcept(mock_isdir, mock_submit, mock_savini):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         }
     }
 
@@ -328,9 +341,10 @@ def test_submit_queueexcept(mock_isdir, mock_submit, mock_savini):
     jobs = {
         "lbowconf": {},
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         }
     }
 
@@ -358,19 +372,22 @@ def test_submit_queueinfo(mock_isdir, mock_submit, mock_savini):
             "test-machine-queue-max": 0
         },
         "job-one": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test123"
+            "scheduler": "LSF"
         },
         "job-two": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test456"
+            "scheduler": "LSF"
         },
         "job-three": {
+            "jobid": "test456",
+            "executable": "pmemd.MPI",
             "resource": "test-machine",
-            "scheduler": "LSF",
-            "jobid": "test789"
+            "scheduler": "LSF"
         }
     }
 

@@ -58,9 +58,10 @@ def test_prepare_single(mock_prepare):
 
     jobs = {
         "job-one": {
+            "executable": "pmemd.MPI",
+            "jobid": "test456",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test456",
             "subfile": ""
         }
     }
@@ -81,21 +82,24 @@ def test_prepare_multiple(mock_prepare):
 
     jobs = {
         "job-one": {
+            "executable": "pmemd.MPI",
+            "jobid": "test123",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test123",
             "subfile": ""
         },
         "job-two": {
+            "executable": "pmemd.MPI",
+            "jobid": "test456",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test456",
             "subfile": ""
         },
         "job-three": {
+            "executable": "pmemd.MPI",
+            "jobid": "test789",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test789",
             "subfile": ""
         }
     }
@@ -115,9 +119,10 @@ def test_prepare_attrexcept(mock_prepare):
 
     jobs = {
         "job-one": {
+            "executable": "pmemd.MPI",
+            "jobid": "test456",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test456",
             "subfile": ""
         }
     }
@@ -138,9 +143,10 @@ def test_prepare_ownscript(mock_prepare):
 
     jobs = {
         "job-one": {
+            "executable": "pmemd.MPI",
+            "jobid": "test456",
             "resource": "test-machine",
             "scheduler": "LSF",
-            "jobid": "test456",
             "subfile": "test.lsf",
             "upload-include": "file1, file2, file3"
         }

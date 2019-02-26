@@ -403,16 +403,16 @@ def submit(jobs):
 
                 getattr(schedulers, scheduler.lower()).submit(job)
 
-                LOG.info("Job '%s' submitted with id '%s'", item, job["jobid"])
+            LOG.info("Job '%s' submitted with id '%s'", item, job["jobid"])
 
-                job["laststatus"] = "Queued"
+            job["laststatus"] = "Queued"
 
-                # Increment the queue counter by one (used to count the slots).
-                jobs["lbowconf"][job["resource"] + "-" + "queue-slots"] = \
-                    str(int(jobs["lbowconf"][job["resource"] +
-                            "-" + "queue-slots"]) + 1)
+            # Increment the queue counter by one (used to count the slots).
+            jobs["lbowconf"][job["resource"] + "-" + "queue-slots"] = \
+                str(int(jobs["lbowconf"][job["resource"] +
+                        "-" + "queue-slots"]) + 1)
 
-                submitted += 1
+            submitted += 1
 
         # Submit method can't be found.
         except AttributeError:

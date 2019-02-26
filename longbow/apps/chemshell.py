@@ -44,9 +44,9 @@ import longbow.shellwrappers as shellwrappers
 
 
 EXECDATA = {
-    "chemsh.x": {
+    "chemsh": {
         "subexecutables": [],
-        "requiredfiles": ["<"],
+        "requiredfiles": ["<"]
     }
 }
 
@@ -82,15 +82,25 @@ def submithook(job):
     LOG.info("Chemshell plugin overrides the native submit function.")
 
     # Change into the working directory and submit the job.
-    cmd = ["cd " + job["destdir"] + "\n", "qsub " + job["subfile"]]
+    cmd = ["cd " + job["destdir"] + "\n", job["executableargs"]]
 
     shellout = shellwrappers.sendtossh(job, cmd)
 
     # Find job id.
     try:
 
-        # Do the regex in Longbow rather than in the subprocess.
-        jobid = re.search(r'\d+', shellout[0]).group()
+        # Split the shell output down to a list of lines.
+        lines = shellout[0].split('\n')
+
+        # Find line with keyword "submitted".
+        for line in lines:
+
+            if "submitted" in line:
+
+                jobidline = line
+                break
+
+        jobid = re.search(r'\d+', jobidline).group()
 
     except AttributeError:
 
