@@ -79,7 +79,27 @@ def submithook(job):
     chemshell.
     '''
 
-    LOG.info("Chemshell plugin overrides the native submit function.")
+    LOG.info("Chemshell plugin some of the native functionality of Longbow.")
+
+    args = job["executableargs"]
+    newargs = ""
+
+    if "--submit" not in args:
+
+        newargs = " --submit"
+
+    if "--account" not in args and "-A" not in args and job["account"] != "":
+
+        newargs = newargs + " --account " + job["account"]
+
+    if "--queue" not in args and "-q" not in args and job["queue"] != "":
+
+        newargs = newargs + " --queue " + job["queue"]
+
+    job["executableargs"] = args + newargs
+
+    LOG.info("For job '%s' - execution string: %s", job["jobname"],
+             job["executableargs"])
 
     # Change into the working directory and submit the job.
     cmd = ["cd " + job["destdir"] + "\n", job["executableargs"]]
