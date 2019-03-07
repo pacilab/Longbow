@@ -51,3 +51,18 @@ def rsyncuploadhook(jobs, job):
 
     jobs[job]["upload-include"] = ""
     jobs[job]["upload-exclude"] = "log, *.log"
+
+
+def scripthook(jobs, job):
+
+    '''Add some lines that will get incorporated into the job submit script
+    to save having to introduce a complex dependency chain for plugins.'''
+
+    if jobs[job]["scripts"] == "":
+
+        jobs[job]["scripts"] = "module use ~/.mymodules, module load chemshell"
+
+    else:
+
+        jobs[job]["scripts"] = (jobs[job]["scripts"] + ", module use "
+                                "~/.mymodules, module load chemshell")

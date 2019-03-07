@@ -218,6 +218,18 @@ def processjobs(jobs):
 
             jobs[job]["upload-exclude"] = "*"
 
+        # See if there are any scripting modifications to be added to the job
+        # submit file.
+        try:
+
+            substitution = getattr(apps,
+                                   app.lower()).scripthook(jobs, job)
+
+        # No, then just continue.
+        except AttributeError:
+
+            pass
+
         # Replace the input command line with the execution command line.
         jobs[job]["executableargs"] = (jobs[job]["executable"] + " " +
                                        " ".join(jobs[job]["executableargs"]))
