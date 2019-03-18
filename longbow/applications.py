@@ -222,8 +222,7 @@ def processjobs(jobs):
         # submit file.
         try:
 
-            substitution = getattr(apps,
-                                   app.lower()).scripthook(jobs, job)
+            getattr(apps, app.lower()).scripthook(jobs, job)
 
         # No, then just continue.
         except AttributeError:
