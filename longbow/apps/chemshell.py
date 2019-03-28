@@ -89,6 +89,10 @@ def submithook(job):
 
         newargs = " --submit"
 
+    if "--jobname" not in args and "-J" not in args and job["jobname"] != "":
+
+        newargs = newargs + " --jobname " + job["jobname"]
+
     if "--account" not in args and "-A" not in args and job["account"] != "":
 
         newargs = newargs + " --account " + job["account"]
@@ -96,6 +100,15 @@ def submithook(job):
     if "--queue" not in args and "-q" not in args and job["queue"] != "":
 
         newargs = newargs + " --queue " + job["queue"]
+
+    if "--walltime" not in args and "-wt" not in args and job["maxtime"] != "":
+
+        newargs = newargs + " --walltime " + job["maxtime"]
+
+    if ("--memory" not in args and "--mem" not in args and "-m" not in args and
+            job["queue"] != ""):
+
+        newargs = newargs + " --memory " + job["memory"]
 
     job["executableargs"] = args + newargs
 
