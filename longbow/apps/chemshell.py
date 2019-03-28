@@ -68,8 +68,8 @@ def submitscripthook(job):
     Chemshell itself.
     '''
 
-    LOG.info("For job {0} - Chemshell is being used so skip creation of "
-             "submit file.".format(job["jobname"]))
+    LOG.info("For job {0} - skipping creation of submit file, not needed for "
+             "Chemshell.".format(job["jobname"]))
 
 
 def submithook(job):
@@ -79,7 +79,8 @@ def submithook(job):
     chemshell.
     '''
 
-    LOG.info("Chemshell plugin some of the native functionality of Longbow.")
+    LOG.info("For job '%s', Chemshell plugin in use - Modifying the execution "
+             "string.", job["jobname"])
 
     args = job["executableargs"]
     newargs = ""
