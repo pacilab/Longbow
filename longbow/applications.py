@@ -212,27 +212,31 @@ def processjobs(jobs):
         # Hook to determine command-line parameter substitutions.
         try:
 
-            substitution = getattr(
-                apps, app.lower()).detectsubstitutions(
-                    list(jobs[job]["executableargs"]))
+            substitution = getattr(apps, app.lower()).detectsubstitutions(
+                list(jobs[job]["executableargs"]))
 
         except AttributeError:
 
             pass
 
-        # Process the command-line.
-        foundflags = _proccommandline(jobs[job], filelist, foundflags,
-                                      substitution)
-
-        # Validate if all required flags are present.
-        _flagvalidator(jobs[job], foundflags)
-
-        # Some programs are too complex to do file detection, such as
-        # chemshell.
+        # Hook to custom commandline/input file processor.
         try:
 
-            substitution = getattr(apps,
-                                   app.lower()).rsyncuploadhook(jobs, job)
+            filelist = getattr(apps, app.lower()).cmdlinevalidator(jobs, job)
+
+        except AttributeError:
+
+            # Process the command-line using the Longbow methods.
+            foundflags = _proccommandline(jobs[job], filelist, foundflags,
+                                          substitution)
+
+            # Validate if all required flags are present.
+            _flagvalidator(jobs[job], foundflags)
+
+        # Hook to set custom rsync behaviour.
+        try:
+
+            getattr(apps, app.lower()).rsyncuploadhook(jobs, job)
 
         except AttributeError:
 
