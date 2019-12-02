@@ -54,25 +54,38 @@ def cmdlinevalidator(job):
     requiredfiles = ["CONFIG", "CONTROL", "FIELD"]
     optionalfiles = ["TABLE", "TABEAM", "REFERENCE"]
 
-    # Check for required files and fail if missing.
-    for item in requiredfiles:
+    for rep in range(1, int(job["replicates"]) + 1):
 
-        if os.path.isfile(os.path.join(job["localworkdir"], item)):
+        if int(job["replicates"]) == 1:
 
-            filelist.append(item)
+            filepath = job["localworkdir"]
 
         else:
 
-            raise exceptions.RequiredinputError(
-                "In job '{0}' the following file '{1}' as input to the "
-                "application '{2}' is missing"
-                .format(job["jobname"], item, "DL_POLY"))
+            repx = str(job["replicate-naming"]) + str(rep)
+            filepath = os.path.join(job["localworkdir"], repx)
 
-    # Check for any optional files.
-    for item in optionalfiles:
+        # Check for required files and fail if missing.
+        for item in requiredfiles:
 
-        if os.path.isfile(os.path.join(job["localworkdir"], item)):
+            if os.path.isfile(os.path.join(filepath, item)):
 
-            filelist.append(item)
+                filelist.append(item)
+
+            else:
+
+                raise exceptions.RequiredinputError(
+                    "In job '{0}' the following file '{1}' as input to the "
+                    "application '{2}' is missing"
+                    .format(job["jobname"],
+                            os.path.join(filepath, item),
+                            "DL_POLY"))
+
+        # Check for any optional files.
+        for item in optionalfiles:
+
+            if os.path.isfile(os.path.join(filepath, item)):
+
+                filelist.append(item)
 
     return filelist
