@@ -49,5 +49,9 @@ EXECDATA = {
     "pmemd.cuda": {
         "subexecutables": [],
         "requiredfiles": ["-c", "-i", "-p"],
+    },
+    "pmemd.cuda_SPFP": {
+        "subexecutables": [],
+        "requiredfiles": ["-c", "-i", "-p"],
     }
 }
