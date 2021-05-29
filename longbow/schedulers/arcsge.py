@@ -130,7 +130,11 @@ def prepare(job):
         
         if job["arcsge-gpu"] in ("v100", "p100"):
             
-            jobfile.write("#$ -l cproc_" + job["arcsge-gpu"] + "=1\n")
+            jobfile.write("#$ -l coproc_" + job["arcsge-gpu"] + "=1\n")
+            
+    if job["hold_jid"] is not "":
+        
+        jobfile.write("#$ -hold_jid " + job["hold_jid"])
 
     # Redirect stdout
     if job["stdout"] != "":

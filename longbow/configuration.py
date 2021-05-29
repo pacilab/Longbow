@@ -91,6 +91,7 @@ JOBTEMPLATE = {
     "executable": "",
     "executableargs": "",
     "handler": "",
+    "hold_jid": "",
     "host": "",
     "localworkdir": "",
     "lsf-cluster": "",
