@@ -80,6 +80,7 @@ LOG = logging.getLogger("longbow.configuration")
 JOBTEMPLATE = {
     "account": "",
     "accountflag": "",
+    "arcsge-gpu": "",
     "cores": "24",
     "corespernode": "24",
     "download-exclude": "",
