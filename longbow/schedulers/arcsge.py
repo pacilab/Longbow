@@ -134,7 +134,7 @@ def prepare(job):
             
     if job["hold_jid"] is not "":
         
-        jobfile.write("#$ -hold_jid " + job["hold_jid"])
+        jobfile.write("#$ -hold_jid " + job["hold_jid"] + "\n")
 
     # Redirect stdout
     if job["stdout"] != "":
