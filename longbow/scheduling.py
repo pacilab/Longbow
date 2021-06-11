@@ -114,7 +114,7 @@ def checkenv(jobs, hostconf):
             if job["resource"] not in saveparams:
 
                 saveparams[job["resource"]] = {}
-            print(job["scheduler"])
+                
             # If we have no scheduler defined by the user then find it.
             if job["scheduler"] is "":
 
