@@ -204,7 +204,8 @@ def status(job):
     states = {
         "h": "Held",
         "qw": "Queued",
-        "r": "Running"
+        "r": "Running",
+        "hqw": "Held in queue"
     }
 
     jobstate = ""
