@@ -205,7 +205,8 @@ def status(job):
         "h": "Held",
         "qw": "Queued",
         "r": "Running",
-        "hqw": "Held in queue"
+        "hqw": "Held in queue",
+        "t": "Transfering"
     }
 
     jobstate = ""
